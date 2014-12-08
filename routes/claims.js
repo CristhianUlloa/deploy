@@ -8,7 +8,6 @@ var Gift = require('../models/gift');
 var User = require('../models/user');
 var Claim = require('../models/claim');
 var utils = require('../utils/utils');
-var mailer = require('../mailer/models');
 
 /**
  * Claim Object Specification
@@ -38,7 +37,7 @@ router.get('/', function (req, res) {
         var claims = [];
 
         // for each claim, figure out which gift and wishlist it corresponds to
-        async.each(claimList,
+        async.each(claimList, 
             function(entry, callback) {
                 var claim = {};
                 claim.id = entry._id;
@@ -47,29 +46,39 @@ router.get('/', function (req, res) {
                 // find the corresponding gift
                 Gift.findOne({claims: entry._id}, "_id title description claims", function (err, gift) {
 
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                    if (!gift) {
-                        return res.status(404).send(entry._id);
-                    }
-                    claim.gift = gift;
+                    if (err) return res.status(500).send(err);
+                    if (gift) {
 
-                    // find the corresponding wishlist
-                    Wishlist.find({gifts: gift._id}, "_id title owner gifts", function (err, wishlists) {
-                        var wishlist = wishlists[0];
-                        if (wishlist.gifts.indexOf(gift._id) === -1) return res.status(400).send("gift not found on current wishlist");
+                        var sum = 0;
+                        for (var i = 0; i < gift.claims.length; i++) {
+                            sum = sum + gift.claims[i].percentage;
+                        }
+                        
+                        claim.locked = sum == 100;
+                        console.log('gift: '+gift.title+' percentage? '+sum);
+                        claim.gift = gift;
 
-                        User.findOne({_id: wishlist.owner}, "_id firstName lastName", function(err, user) {
-                            claim.owner = {_id: user._id, firstname: user.firstName, lastname: user.lastName};
+                        // find the corresponding wishlist
+                        Wishlist.find({gifts: gift._id}, "_id title owner gifts", function (err, wishlists) {
+                            var wishlist = wishlists[0];
+                            if (wishlist.gifts.indexOf(gift._id) === -1) return res.status(400).send("gift not found on current wishlist");
 
-                            if (err) return res.status(500).send(err);
-                            if (!wishlist) return res.status(404).send(gift._id);
-                            claim.wishlist = wishlist;
-                            claims.push(claim);
-                            callback();
+                            User.findOne({_id: wishlist.owner}, "_id firstName lastName", function(err, user) {
+                                claim.owner = {_id: user._id, firstname: user.firstName, lastname: user.lastName};
+
+                                if (err) return res.status(500).send(err);
+                                if (wishlist) {
+                                    claim.wishlist = wishlist;
+                                    claims.push(claim);
+                                }
+                                callback();
+
+                            });
                         });
-                    });
+                    } else {
+                        callback();
+                    }
+
                 });
             },
             function(err) { //callback - this executes after all the claims have been located
@@ -104,7 +113,7 @@ router.post('/', function (req, res) {
     if (percentage > 100 || percentage < 5 || percentage%5 != 0) {
         return res.status(401).send("bad percentage");
     }
-
+    
     // Create a new claim.
     var newClaim = new Claim({
         claimant: req.currentUser._id,
@@ -139,45 +148,7 @@ router.post('/', function (req, res) {
                 if (err) return res.status(500).send(err);
                 newClaim.save(function (err) {
                     if (err) return res.status(500).send(err);
-                    Gift.findById(gift_id).populate("claims").exec(function(err, gift) {
-                        if (err) return res.status(500).send(err);
-                        if (!gift) return res.status(404).send(gift_id);
-
-                        // check if adding this claim percentage is acceptable
-                        var sum = 0;
-                        gift.claims.forEach(function(claim) {
-                            sum += claim.percentage;
-                        });
-
-                        claimant_ids = [];
-                        for(i = 0; i < gift.claims.length; i++) {
-                            claimant_ids.push(gift.claims[i].claimant);
-                        }
-                        if(sum === 100) {
-                            // send email for fully claimed gift
-                            if(gift.claims.length > 1) {
-                                User.find({"_id": {$in:claimant_ids}}, function(err, users) {
-                                    if (err) return res.status(500).send(err);
-                                    user_emails = [];
-                                    user_names = [];
-                                    for(i = 0; i < users.length; i++) {
-                                        user_emails.push(users[i].email);
-                                        user_names.push(users[i].firstName);
-                                    }
-                                    var locals = {
-                                        email: user_emails,
-                                        subject: "A gift you claimed has been fully claimed.",
-                                        giftName: gift.title,
-                                        others: user_names,
-                                        listUrl: "http://alliwant-ulloac.rhcloud.com/direct/" +wishlist_id
-                                    }
-                                    mailer.sendEmail("split_claim_full", locals);
-                                });
-                            }
-                        }
-                        return res.status(200).json({claim: newClaim, gift: gift});
-
-                    });
+                    return res.status(200).json({claim: newClaim, gift: gift});
                 });
             });
         });
@@ -211,7 +182,7 @@ router.put('/:id', function (req, res) {
     if (percentage > 100 || percentage < 5 || percentage%5 != 0) {
         return res.status(401).send("bad percentage");
     }
-
+    
     // Create a new claim.
     var newClaim = new Claim({
         claimant: req.currentUser._id,
@@ -234,7 +205,7 @@ router.put('/:id', function (req, res) {
             // find the claim to update
             var claimToUpdate;
             //gift.claims.forEach(function(entry) { //forEach is asynchronus...
-            async.each(gift.claims,
+            async.each(gift.claims, 
                 function (claim, callback) {
                     if (String(claim.claimant) == String(req.currentUser._id)) {
                         claimToUpdate = claim;
@@ -256,7 +227,7 @@ router.put('/:id', function (req, res) {
                         sum += claim.percentage;
                         if (sum + newClaim.percentage > 100) {
                             return res.status(400).send("adding this percentage would go over 100");
-                        }
+                        } 
                     });
 
                     // delete the old claim and add the updated one
@@ -270,34 +241,6 @@ router.put('/:id', function (req, res) {
                         newClaim.save(function (err) {
                             if (err) return res.status(500).send(err);
                             claimToUpdate.remove(function(err) {
-                                /////////////////////////////////////////////////////////////////////////////
-                                claimant_ids = [];
-                                for(i = 0; i < gift.claims.length; i++) {
-                                    claimant_ids.push(gift.claims[i].claimant);
-                                }
-                                if(sum === 100) {
-                                    // send email for fully claimed gift
-                                    if(gift.claims.length > 1) {
-                                        User.find({"_id": {$in:claimant_ids}}, function(err, users) {
-                                            if (err) return res.status(500).send(err);
-                                            user_emails = [];
-                                            user_names = [];
-                                            for(i = 0; i < users.length; i++) {
-                                                user_emails.push(users[i].email);
-                                                user_names.push(users[i].firstName);
-                                            }
-                                            var locals = {
-                                                email: user_emails,
-                                                subject: "A gift you claimed has been modified.",
-                                                giftName: gift.title,
-                                                others: user_names
-                                            }
-                                            mailer.sendEmail("split_claim_full", locals);
-                                        });
-                                    }
-                                }
-
-                                /////////////////////////////////////////////////////////////////////////////
                                 if (err) return res.status(500).send(err);
                                 return res.status(200).json({claim: newClaim, gift: gift});
                             });
@@ -335,13 +278,15 @@ router.delete('/:id', function (req, res) {
 
         // find the claim made by this user
         var claimToDelete;
-        async.each(gift.claims,
+        var percentage = 0;
+        async.each(gift.claims, 
             function (entry, callback) {
                 Claim.findById(entry, function(err, claim) {
                     if (err) return res.status(500).send(err);
                     if (String(claim.claimant) == String(req.currentUser._id)) {
                         claimToDelete = claim;
                     }
+                    percentage = percentage + claim.percentage;
                     callback();
                 });
             },
@@ -353,7 +298,7 @@ router.delete('/:id', function (req, res) {
                 }
 
                 // check if the claim may be deleted
-                if (gift.percentage == 100 && gift.claims.length > 1) {
+                if (percentage == 100 && gift.claims.length > 1) {
                     return res.status(400).send("can't unclaim a split gift that has been fully covered");
                 }
 

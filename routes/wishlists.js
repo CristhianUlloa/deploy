@@ -153,7 +153,9 @@ router.get('/:id', function (req, res) {
     // Find Wishlist
     var param_id = utils.sanitizeInput(req.params.id);
     Wishlist.findById(param_id).populate('gifts').exec(function (err, wishlist) {
-
+        if (err) return res.status(500).send(err);
+        if (!wishlist) return res.status(404).send(param_id);
+        
 		var claimsToPopulate = {
 			path: 'gifts.claims',
 			model: 'Claim'
