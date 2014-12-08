@@ -1,0 +1,66 @@
+<div id="signin-col">
+  <div class="panel panel-primary" id="signin">
+    <div class="panel-heading green-header">
+      <span class="panel-title white-title">Log In</span>
+    </div>
+    <div class="panel-body">
+      <div id="signin-error" class="error">
+        <% if(error) { %>
+          <%=error %>
+        <% } %>
+      </div>
+      <form id="signin-form">
+        <div class="form-group">
+          <label for="signin-email">Email</label>
+          <input type="text" class="form-control input-sm" id="signin-email" placeholder="santa@northpole.com" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="signin-pass">Password</label>
+          <input type="password" class="form-control input-sm" id="signin-pass" placeholder="password" name="password" required>
+        </div>
+        <input type="submit" value="Log In" class="btn btn-success login-button"/>
+      </form>
+    </div>
+  </div>
+  <div>
+    <br />
+    <br />
+  <h1 id="slogan"><strong>All I Want</strong> is a better wishlist!</h1>
+  </div>
+</div>
+
+<div id="register" class="panel panel-primary">
+  <div class="panel-heading green-header">
+    <span class="panel-title white-title">Create Account</span>
+  </div>
+  <div class="panel-body">
+    <div id="register-error" class="error">
+      <% if(error) { %>
+        <%=error %>
+      <% } %>
+    </div>
+    <form id="register-form">
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input type="text" class="form-control input-sm" id="firstname" placeholder="Kris" name="firstname" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" class="form-control input-sm" id="lastname" placeholder="Kringle" name="lastname" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control input-sm" id="email" placeholder="santa@northpole.com" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="passwordR">Password</label>
+        <input type="password" class="form-control input-sm" id="passwordR" placeholder="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" class="form-control input-sm" id="confirm" placeholder="password" name="confirm" required>
+      </div>
+      <input type="submit" value="Sign Up" class="btn btn-success login-button"/>
+    </form>
+  </div>  
+</div>
