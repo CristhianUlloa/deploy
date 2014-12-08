@@ -145,7 +145,7 @@ $(document).ready(function () {
         var lastname = $('#newLastName').val();
 
         change_name_post(firstname, lastname, function(result, status, xhr) {
-            $("#accountName").html(result.content.user.firstName+" "+result.content.user.lastName +" ▼" ;);
+            $("#accountName").html(result.content.user.firstName+" "+result.content.user.lastName +" ▼" );
             $("#username-link").html(result.content.user.firstName);
         });
     });
