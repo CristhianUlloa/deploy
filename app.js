@@ -114,7 +114,7 @@ app.use(function(err, req, res, next) {
     console.log("line 114");
     res.status(err.status || 500).end();
     res.render('error', {
-        message: err.message,
+        message: "TRICIA WHY WOULD YOU DO THAT?!?!?!",
         error: {}
     });
 });
