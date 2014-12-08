@@ -1,0 +1,149 @@
+<!--author: stahdirk -->
+<!--main panel-->
+
+<div class="panel panel-primary col-xs-12 col-sm-12 col-md-12" id="account_contents">
+  <div class="panel-heading green-header" id="account_info_heading">
+    <h4 class="panel-title white-title" id="account_info">
+      Account Information
+    </h4>
+  </div>
+  <div class="panel-body">
+
+    Welcome, <span id="accountName"><%= name %></span>.<br />
+    Your email address is <%= email %>.<br /><br />
+
+    <div id="accountSubscribed" <% if (!subscribed) { %>hidden<% } %>>
+      You are subscribed to emails. <input type="button" name="unsubscribe" class="btn btn-xs btn-danger" id="unsubscribeBtn" value="Unsubscribe"/>
+    </div>
+    <div id="accountUnsubscribed" <% if (subscribed) { %>hidden<% } %>>
+      You are unsubscribed from emails. <input type="button" name="subscribe" class="btn btn-xs btn-success" id="subscribeBtn" value="Subscribe"/>
+    </div>
+
+    <div class="modal fade" id="unsubscribeModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Unsubscribe</h4>
+          </div>
+          <div class="modal-body">
+            You are about to unsubscribe from email notifications. Emails are the primary way that AllIWant communicates with users - if you unsubscribe, you're missing out! We promise to only send important, useful emails. <br /><br /> That being said, if you still want to unsubscribe, click "Confirm" below. Else, click "Cancel".
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmUnsubscribe">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <!-- NOTE: this code will be used later (not MVP), so it is intentionally commented out -->
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#changeNameModal">Change Name</button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+
+    <!-- Change Name Modal-->
+     <div class="modal fade" id="changeNameModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">Change Name</h4>
+          </div>
+          <div class="modal-body">
+            <form id="changeNameForm">
+              First Name:
+              <input type="text" name="title" placeholder="First Name" id="newFirstName">
+              Last Name:
+              <input type="text" name="title" placeholder="Last Name" id="newLastName">
+              <br>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="changeNameSubmit">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<!-- Change Password Modal-->
+	<div class="modal fade" id="changePasswordModal">
+	<div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	    <h4 class="modal-title">Change Password</h4>
+	  </div>
+	  <div class="modal-body">
+	    <form id="changePasswordForm">
+	      Old Password
+	      <input type="password" name="title" placeholder="Old password" id="oldPW"><br />
+	      New Password
+	      <input type="password" name="title" placeholder="New password" id="newPW">
+		  Confirm Password
+	      <input type="password" name="title" placeholder="Confirm password" id="newPWConfirm">
+	      <br>
+	    </form>
+	    <br />
+
+	    <!-- alerts -->
+	    <div class="alert alert-danger" role="alert" hidden="true" id="mismatchAlert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          Password's don't match
+        </div>
+      	<div class="alert alert-danger" role="alert" hidden="true" id="incorrectPasswordAlert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          Please re-enter your old password
+        </div>
+
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	    <button type="button" class="btn btn-primary" id="changePasswordSubmit">Save changes</button>
+	  </div>
+	</div>
+	</div>
+	</div>
+
+    <br />
+
+  </div>
+</div>
+
+<div class="panel panel-primary col-xs-12 col-sm-12 col-md-12" id="account_claims">
+  <div class="green-header panel-heading">
+    <h4 class="panel-title white-title">
+      Claimed gifts
+    </h4>
+  </div>
+  <div class="panel-body" id="claimed_gifts_topbar">
+    <div id="claimed_gifts_div">
+      <table class="table table-condensed">
+
+      <% for (var i = 0; i < claims.length; i++) { %>
+        <% var claim = claims[i] %>
+          <tr>
+            <td><strong><%= claim.gift.title %></strong></td>
+          </tr>
+          <tr>
+            <td>
+              Description: <%= claim.gift.description %><br />
+              For: <%= claim.owner.firstname %> <%= claim.owner.lastname %><br />
+              Wishlist: <a class="wishlist_link" id="<%= claim.wishlist._id %>"><%= claim.wishlist.title %></a><br />
+              <% var isSplit = false; var num = 0; if (claim.gift.claims.length > 1) { isSplit = true, num = claim.gift.claims.length-1; } %>
+              <% if (isSplit) { %>
+                  You have a split claim on this gift with <%= num %> other user(s); you are contributing <%= claim.percentage %> percent.
+              <% } else { %>
+				  <input type="button" class="removeClaimBtn btn btn-xs btn-danger" id="<%= claim.gift._id %>" value="Remove Claim" />
+              <% } %>
+
+            </td>
+          </tr>
+      <% } %>
+      </table>
+    </div>
+  </div>
+</div>

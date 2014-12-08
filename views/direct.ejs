@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <!-- javascripts -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/javascripts/ejs_0.9_alpha_1_production.js"></script>
+
+    <script type="text/javascript" src="/javascripts/index.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers-users-client.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers-main-ui.js"></script>
+    <script type="text/javascript" src="/javascripts/users.js"></script>
+
+    <script type="text/javascript" src="/javascripts/email_verification.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers-main-client.js"></script>
+    <script type="text/javascript" src="/javascripts/wishlist-page.js"></script>
+    <script type="text/javascript" src="/javascripts/wishlist-page-modals.js"></script>
+
+    <script type="text/javascript" src="/javascripts/account.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers_account_client.js"></script>
+
+    <script type="text/javascript" src="/javascripts/public-wishlist-page.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers-public-ui.js"></script>
+    <script type="text/javascript" src="/javascripts/helpers-public-client.js"></script>
+    
+
+    <!-- Latest compiled and minified JavaScript for Bootstrap-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div id="direct_link"><%= link %></div>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="top-navbar">
+      <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" id="wishlist-link">All I Want [for Christmas]</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" id="username-link" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" id="goto-account">My Account</a></li>
+                <li><a href="#" id="wishlist-link">Wishlists</a></li>
+                <li><a href="#" id="goto-public">Public Wishlists</a></li>
+                <li class="divider"></li>
+                <li><a href="#" id="logout-link">Log Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container-fluid" id="big-container">
+    <div class="row row-offcanvas row-offcanvas-left" id="row-thing">
+      <!--<div id="slogan">
+        All I Want [for Christmas] is a <em>better</em> wishlist!
+      </div>-->
+      <div id="main-container"></div> <!--data-spy="scroll" data-target="#sidebar-nav"-->   
+    </div>
+    </div>
+  </body>
+</html>

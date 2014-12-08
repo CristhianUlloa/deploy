@@ -1,0 +1,187 @@
+<!-- View for exploring public wishlists. -->
+<!-- Author: tdivita@mit.edu -->
+
+<!--sidebar-->
+<div class="panel panel-primary col-xs-6 col-sm-3 col-md-3 sidebar-offcanvas" id="sidebar" role="navigation">
+  <ul class="nav" id="sidebar-nav">
+    <li id="firstListTitle" class="h4">Public Wishlists
+      <button class="btn btn-default btn-xs" id="view_all_button">View All</button>
+    </li>
+    <div class="sidebar_search input-group">
+      <input type="text" class="form-control" placeholder="Search" name="search_term" id="sidebar_search_term">
+      <div class="input-group-btn">
+        <button id="sidebar_search_submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+      </div>
+    </div>
+    <ul class="nav" id="public-wishlists">
+      <li class="sidebar_wishlist_default">No one has created any public wishlists yet!</li>
+    </ul>
+  </ul>
+</div><!--/sidebar-->
+
+<!--main panel-->
+<div class="panel panel-primary col-xs-12 col-sm-8 col-md-8" id="wishlist_contents">
+  <div class="panel-heading" id="wishlistTitlebar">
+    <div id="wishlistTitleContainer">
+      <span class="panel-title" id="wishlistTitle">
+        Welcome!
+      </span>
+      <span hidden="true" id="wishlistID"/> <!--so we know which wishlist is displayed-->
+      <span hidden="true" id="wishlistOwned"/>
+      <span hidden="true" id="userEmail"/>
+    </div>
+    <div id="wishlistButtonContainer"></div>
+  </div>
+  <div id="wishlistDetails" class="panel-body">
+    <div class="wishlistDetailDiv">This Wishlist Belongs To: <span id="wishlistOwner" class="wishlistDetail"></span></div>
+    <div class="wishlistDetailDiv">Wishlist Privacy Setting: <span id="wishlistPrivacy" class="wishlistDetail"></span></div>
+    <div class="wishlistDetailDiv" id="wishlistURLDiv">Direct Link (for Sharing): <a id="wishlistURL" class="wishlistDetail"></a></div>
+
+    <div id="wishlistDescription">
+      Welcome to the public wishlist navigator! Use the sidebar on the left to find and view public wishlists. You can save a public wishlist so that it will appear in your Shared Lists by clicking the save button while you are viewing it, or by claiming a gift on it.
+    </div>
+  </div>
+  <table class="table table-condensed" id="gift_table">
+    <tbody></tbody>
+  </table>
+</div><!--/main panel-->
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~BEYOND THIS POINT THERE BE MODALS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<!--create/edit/delete wishlist or gift modal-->
+<div class="modal fade" id="createEditDeleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="modalTitle">Modal Title</h4>
+      </div>
+      <div class="modal-body">
+        <form id="modalForm" onsubmit="return false">
+          <div class="form-group">
+            <label for="modalTitleInput">Title</label>
+            <input type="text" class="form-control" id="modalTitleInput" placeholder="List Title">
+          </div>
+          <div class="form-group">
+            <label for="modalDescInput">Description</label>
+            <textarea class="form-control" rows="4" cols="50" name="description" form="modalForm" placeholder="List Description" id="modalDescInput"></textarea>
+          </div>
+          <div class="btn-group" data-toggle="buttons" id="modalPublicToggle" hidden="true">
+            <label class="btn btn-default" id="modalPrivateButton">
+              <input type="radio">Private
+            </label>
+            <label class="btn btn-default" id="modalPublicButton">
+              <input type="radio">Public
+            </label>
+          </div>
+        </form>
+        <br />
+        <div class="alert alert-danger" role="alert" hidden="true" id="modalAlert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          Don't forget a title!
+        </div>
+        <div class="alert alert-danger" role="alert" hidden="true" id="modalToggleAlert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          Select whether this list will be public or private.
+        </div>
+        <div class="alert alert-info" role="alert" hidden="true" id="modalWishlistWarning">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Info:</span>
+          <strong>Careful! </strong>You're editing or deleting this wishlist, but if it's been shared with people, they might have already used this information to buy gifts! If you proceed, you may want to let those you've shared this wishlist with know.
+        </div>
+        <div class="alert alert-info" role="alert" hidden="true" id="modalGiftWarning">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Info:</span>
+          <strong>Careful! </strong>You're editing or deleting this gift, but if it's been claimed by someone, they might have already used this information to buy it! If you proceed, you may want to let those you've shared this wishlist with know.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="modalDelete" hidden="true">Delete</button>
+        <button type="button" class="btn btn-success" id="modalSave">Create Wishlist</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--share wishlist modal-->
+<div class="modal fade" id="shareModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Share this Wishlist</h4>
+      </div>
+      <div class="modal-body">
+        <form id="shareForm" onsubmit="return false">
+          <div class="form-group">
+            <label for="shareInput">Recipients</label>
+            <textarea class="form-control" rows="4" cols="50" name="description" form="shareForm" placeholder="Enter the recipients' e-mail address(es), separated by commas." id="shareInput"></textarea>
+            <span id="helpBlock" class="help-block"></br>This list is shared with the following email addresses:</br>
+              <span id="alreadySharedWith"></span>
+            </span>
+          </div>
+        </form>
+        <div class="alert alert-danger" role="alert" hidden="true" id="shareAlert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          <strong>Bad Input. </strong>Please double check your comma-separated list of emails.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="shareSubmit">Share</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!--split claim modal-->
+<div class="modal fade" id="splitModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="splitModalTitle">Make a Split Claim</h4>
+      </div>
+      <div class="modal-body">
+        <div id="newSplitMsg" class="alert alert-info" hidden="true">
+          This gift has not yet been claimed. If you would like to split this gift with others, claim a percentage of it below. Other users can then place claims for further percentages until the total amount is reached. Once that happens, all participating claimants will be notified via email, and you will no longer be able to edit your claim.
+
+          If you would like to claim this gift fully on your own, you may enter 100%.
+        </div>
+        <div id="existingSplitMsg" class="alert alert-info" hidden="true">
+          This gift has been partially claimed by the user(s) below. If you would like to chip in to giving this gift, claim some or all of the remaining percentage. Once the total amount is reached, all participating claimants will be notified via email, and you will no longer be able to edit your claim.
+        </div>
+        <div id="updateSplitMsg" class="alert alert-info" hidden="true">
+          You have already claimed part of this gift. If you'd like to update the amount of your claim, change the percentage below and click "Update Claim". If you'd like to remove your claim, click "Unclaim". Once the total amount is reached, all participating claimants will be notified via email, and you will no longer be able to edit your claim.
+        </div>
+        <div id="noUpdateSplitMsg" class="alert alert-info" hidden="true">
+          You have claimed part of this gift, which has reached the total amount. We've emailed you and the others chipping in (below) so you may arrange the purchase. Claims can no longer be edited at this time.
+        </div>
+        <label>Gift Title:</label><span id="splitGiftTitle"></span><br />
+        <label>Gift Description:</label><span id="splitGiftDesc"></span><br />
+        <label id="splitTableLabel">Claims So Far: </label>
+        <table id="splitTable">
+        </table>
+        <br />
+        <form id="splitForm" onsubmit="return false">
+          <div class="form-group">
+            <label for="splitPercentageSelect">Remaining Percentage: </label>
+            <select name="percentage" id="splitPercentageSelect">
+              <!--Percentage options (up to remaining amount) appended when a wishlist is loaded.-->
+            </select><span> %</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="splitDelete">Unclaim</button>
+        <button type="button" class="btn btn-success" id="splitSubmit">Claim</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

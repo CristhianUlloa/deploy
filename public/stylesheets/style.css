@@ -1,0 +1,351 @@
+body {
+  padding: 50px;
+  padding-left:0px;
+  padding-right:0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+a {
+  color: #00B7FF;
+  cursor: pointer;
+}
+
+td {
+  border-top: 0px solid white !important;
+}
+
+.arrow-toggle .glyphicon-chevron-up,
+.arrow-toggle.collapsed .glyphicon-chevron-down {
+    display: inline-block;
+    cursor: pointer;
+
+}
+.arrow-toggle.collapsed .glyphicon-chevron-up,
+.arrow-toggle .glyphicon-chevron-down {
+    display: none;
+}
+
+.arrow-cell {
+  width: 10px;
+}
+
+/* WISHLISTS PAGE: gift table */
+
+#gift_table {
+  border-collapse:collapse;
+}
+
+.wishlist_gift_row {
+  border-top: 1px solid lightgray !important;
+}
+
+.wishlist_gift_description_row {
+  border-top: 0px solid white !important;
+}
+
+.wishlist_gift_cell {
+  padding-left: 15px !important;
+}
+
+.wishlist_gift_button_cell {
+  float: right;
+}
+
+.wishlist_gift_description_cell {
+  padding: 0 !important;
+  padding-left: 40px !important;
+}
+
+.gift_description {
+  font-style: italic;
+}
+
+/* WISHLIST PAGE: wishlist info */
+
+#wishlistTitlebar {
+  background-color: green;
+  background-image: none;
+}
+
+#wishlistTitleContainer {
+  max-width: 60%;
+}
+
+#wishlistTitle {
+  margin-top: 1.33em;
+  margin-bottom: 1.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  padding-top: 12px;
+}
+
+.wishlist_edit_button {
+  margin-left: 15px;
+}
+
+.wishlist_saved {
+  margin-left: 15px;
+  color: white;
+  font-style: italic;
+  display: inline;
+}
+
+#wishlistDetails {
+  font-style: italic;
+  padding-bottom: 30px;
+  background-color: #EFEFEF;
+}
+
+.wishlistDetailDiv {
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.wishlistDetail {
+  font-weight: normal !important;
+}
+
+#wishlist_contents {
+  border-color: green;
+  float: right;
+  padding: 0px;
+}
+
+#wishlistButtonContainer {
+  float: right;
+  margin-top: -26px;
+}
+
+/* ACCOUNT PAGE */
+
+#account_contents {
+  border-color: green;
+  float: right;
+  padding: 0px;
+}
+
+#account_claims {
+  border-color: green;
+  float: right;
+  padding: 0px;
+}
+
+/* MODALS AND CONTAINERS */
+
+#main-container {
+  padding: 50px 100px 50px 100px;
+}
+
+.modal-title {
+  color: #851304 !important;
+}
+
+.green-header {
+  background-color: green !important;
+  background-image: none !important;
+}
+
+.white-title {
+  color: white !important;
+  font-weight: bold;
+}
+
+#splitTable {
+  border-width: 1px !important;
+  border-color: gray !important;
+  border-style: solid !important;
+  width: 100%;
+  text-align: center;
+}
+
+.claim_cell {
+  border-width: 1px !important;
+  border-color: gray !important;
+  border-style: solid !important;
+}
+
+/* LOGIN PAGE */
+#slogan {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  font-style: italic;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+#signin-col {
+  float: left;
+  width: 45%;
+}
+
+#signin {
+  border-color: green;
+}
+
+#slogan {
+  color: #941504;
+  font-family: cursive;
+}
+
+#register {
+  float: right;
+  width: 45%;
+  border-color: green;
+}
+
+.login-button {
+  float: right;
+}
+
+/* GENERAL CSS */
+
+.dropdown-toggle {
+  visibility: hidden;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.secret {
+  margin: 16px 0;
+}
+
+.secret p {
+  margin: 4px 0;
+}
+
+.inline-div {
+	display: inline;
+}
+
+/* WISHLIST SIDEBAR */
+
+#sidebar {
+  padding-top: 12px;
+  padding-bottom: 22px;
+  border-color: green;
+  border-width: 2px;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+#view_all_button {
+  float:right;
+  margin-top: -4px;
+  font-style: italic
+}
+
+.sidebar_search {
+  margin: 10px 0px;
+}
+
+.sidebar_wishlist {
+  padding: 10px 15px;
+}
+
+.sidebar_wishlist_default {
+  font-style: italic;
+  color: gray;
+}
+
+.sidebar_wishlist:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.selected_wishlist {
+  font-weight: bolder;
+  font-style: italic;
+  color: green;
+}
+
+.sidebar_public_wishlist {
+  padding: 10px 15px;
+}
+
+.sidebar_public_wishlist_default {
+  font-style: italic;
+  color: gray;
+}
+
+.sidebar_public_wishlist:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.selected_public_wishlist {
+  font-weight: bolder;
+  font-style: italic;
+  color: green;
+}
+
+/* NAVBAR: overriding default bootstrap with our colors */
+
+.navbar-default {
+  background-color: #941504 !important;
+  border-color: #851304 !important;
+  background-image: none !important;
+}
+.navbar-default .navbar-brand {
+  color: white !important;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: white !important;
+}
+.navbar-default .navbar-text {
+  color: white !important;
+}
+.navbar-default .navbar-nav > li > a {
+  color: white !important;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: white !important;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: white !important;
+  background-color: #851304 !important;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: white !important;
+  background-color: #851304 !important;
+}
+.navbar-default .navbar-toggle {
+  border-color: #851304 !important;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #851304 !important;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white !important;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: white !important;
+}
+.navbar-default .navbar-link {
+  color: white !important;
+}
+.navbar-default .navbar-link:hover {
+  color: white !important;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: white !important;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: white !important;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: white !important;
+    background-color: #851304 !important;
+  }
+}
