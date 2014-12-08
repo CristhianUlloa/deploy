@@ -344,7 +344,7 @@ router.put('/share/:id', function (req, res) {
                 if (err) return res.status(500).send(err);
                 if(users.length > 0) {
                     for(j = 0; j < users.length; j++) {
-                        if(users[j].subscire && users[j].email && users[j].firstName && users[j].email.toString() != req.currentUser.email.toString()) {
+                        if(users[j].subscribe && users[j].email && users[j].firstName && users[j].email.toString() != req.currentUser.email.toString()) {
                             var locals = {
                                 email: users[j].email,
                                 subject: "A wishlist has been shared with you!",

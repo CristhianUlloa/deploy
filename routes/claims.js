@@ -166,7 +166,7 @@ router.post('/', function (req, res) {
                                     }
                                     var locals = {
                                         email: user_emails,
-                                        subject: "A gift you claimed has been modified.",
+                                        subject: "A gift you claimed has been fully claimed.",
                                         giftName: gift.title,
                                         others: user_names,
                                         listUrl: "http://alliwant-ulloac.rhcloud.com/direct/" +wishlist_id
