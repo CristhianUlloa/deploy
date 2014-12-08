@@ -114,10 +114,11 @@ app.use(function(err, req, res, next) {
     console.log("line 114");
     res.status(err.status || 500).end();
     res.status("line 116");
-    res.render('index', {
-        message: "TRICIA WHY WOULD YOU DO THAT?!?!?!",
-        error: {}
-    });
+    // res.render('index', {
+    //     message: "TRICIA WHY WOULD YOU DO THAT?!?!?!",
+    //     error: {}
+    // });
+    res.render('index', { title: "All I Want [for Christmas]"});
     res.status("line 121");
 });
 
