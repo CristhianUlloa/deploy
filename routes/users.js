@@ -104,17 +104,11 @@ router.post('/login', function(req, res) {
         utils.sendErrResponse(res, 400, 'That is not a valid email.')
     }
     else {
-        console.log("about to find user");
         User.findOne({
         email: email
         }, function(err, user) {
-            console.log("done finding user");
-            console.log(user);
             if (user) {
-                console.log("about to compare password");
                 comparePassword(password, user.pwhash, function(pwmatch) {
-                    console.log("pwmathc");
-                    console.log(pwmatch);
                     if(pwmatch) {
                         req.session.userId = user._id;
                         utils.sendSuccessResponse(res, {
